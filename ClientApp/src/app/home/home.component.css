@@ -1,0 +1,235 @@
+
+#contain1 {
+  max-width: 1110px;
+  padding: 0 0 0 0;
+  /*background-image: url("/assets/images/code1.jpg"); The image used 
+  background-color: #cccccc;  Used if the image is unavailable 
+  height: 500px;  You must set a specified height 
+  background-position: center;  Center the image 
+  background-repeat: no-repeat;  Do not repeat the image 
+  background-size: cover;*/
+}
+
+.title-container{
+    text-align:center;
+}
+
+/*CSS CHECKBOX*/
+
+div.funkyradio.col-md-3 {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.funkyradio div {
+  clear: both;
+  overflow: hidden;
+}
+
+.funkyradio label {
+  width: 82%;
+  border-radius: 3px;
+  border: 1px solid #D1D3D4;
+  font-weight: normal;
+}
+
+.funkyradio input[type="radio"]:empty,
+.funkyradio input[type="checkbox"]:empty {
+  display: none;
+}
+
+  .funkyradio input[type="radio"]:empty ~ label,
+  .funkyradio input[type="checkbox"]:empty ~ label {
+    position: relative;
+    line-height: 2.5em;
+    text-indent: 3.25em;
+    margin-top: 2em;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+    .funkyradio input[type="radio"]:empty ~ label:before,
+    .funkyradio input[type="checkbox"]:empty ~ label:before {
+      position: absolute;
+      display: block;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      content: '';
+      width: 2.5em;
+      background: #D1D3D4;
+      border-radius: 3px 0 0 3px;
+    }
+
+.funkyradio input[type="radio"]:hover:not(:checked) ~ label,
+.funkyradio input[type="checkbox"]:hover:not(:checked) ~ label {
+  color: #888;
+}
+
+  .funkyradio input[type="radio"]:hover:not(:checked) ~ label:before,
+  .funkyradio input[type="checkbox"]:hover:not(:checked) ~ label:before {
+    content: '\2714';
+    text-indent: .7em;
+    color: #C2C2C2;
+  }
+
+.funkyradio input[type="radio"]:checked ~ label,
+.funkyradio input[type="checkbox"]:checked ~ label {
+  color: #fff;
+}
+
+  .funkyradio input[type="radio"]:checked ~ label:before,
+  .funkyradio input[type="checkbox"]:checked ~ label:before {
+    content: '\2714';
+    text-indent: .7em;
+    color: #333;
+    background-color: #ccc;
+  }
+
+.funkyradio input[type="radio"]:focus ~ label:before,
+.funkyradio input[type="checkbox"]:focus ~ label:before {
+  box-shadow: 0 0 0 3px #999;
+}
+
+.funkyradio-default input[type="radio"]:checked ~ label:before,
+.funkyradio-default input[type="checkbox"]:checked ~ label:before {
+  color: #333;
+  background-color: #ccc;
+}
+
+.funkyradio-primary input[type="radio"]:checked ~ label:before,
+.funkyradio-primary input[type="checkbox"]:checked ~ label:before {
+  color: #fff;
+  background-color: #337ab7;
+}
+
+.funkyradio-success input[type="radio"]:checked ~ label:before,
+.funkyradio-success input[type="checkbox"]:checked ~ label:before {
+  color: #fff;
+  background-color: #5cb85c;
+}
+
+.funkyradio-danger input[type="radio"]:checked ~ label:before,
+.funkyradio-danger input[type="checkbox"]:checked ~ label:before {
+  color: #fff;
+  background-color: #d9534f;
+}
+
+.funkyradio-warning input[type="radio"]:checked ~ label:before,
+.funkyradio-warning input[type="checkbox"]:checked ~ label:before {
+  color: #fff;
+  background-color: #f0ad4e;
+}
+
+.funkyradio-info input[type="radio"]:checked ~ label:before,
+.funkyradio-info input[type="checkbox"]:checked ~ label:before {
+  color: #fff;
+  background-color: #5bc0de;
+}
+
+/*CSS CHECKBOX*/
+
+
+button.calendar, button.calendar:active {
+  width: 2.75rem;
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAcCAYAAAAEN20fAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAEUSURBVEiJ7ZQxToVAEIY/YCHGxN6XGOIpnpaEsBSeQC9ArZbm9TZ6ADyBNzAhQGGl8Riv4BLAWAgmkpBYkH1b8FWT2WK/zJ8ZJ4qiI6XUI3ANnGKWBnht2/ZBDRK3hgVGNsCd7/ui+JkEIrKtqurLpEWaphd933+IyI3LEIdpCYCiKD6HcuOa/nwOa0ScJEnk0BJg0UTUWJRl6RxCYEzEmomsIlPU3IPW+grIAbquy+q6fluy/28RIBeRMwDXdXMgXLj/B2uimRXpui4D9sBeRLKl+1N+L+t6RwbWrZliTTTr1oxYtzVWiTQAcRxvTX+eJMnlUDaO1vpZRO5NS0x48sIwfPc87xg4B04MCzQi8hIEwe4bl1DnFMCN2zsAAAAASUVORK5CYII=') !important;
+  background-repeat: no-repeat;
+  background-size: 23px;
+  background-position: center;
+}
+
+/*------------- LOADER PACMAN ----------------*/
+
+#load-pacman {
+  justify-content: center;
+  align-content: center;
+  height: 180px;
+  margin-top: 50px;
+  display: none;
+}
+
+#load-pacman p{
+  padding: 0 15px 0 50px;
+  margin: 15px 0;
+}
+
+.loader-pacman {
+  cursor: wait;
+  width: 7em;
+  height: 0.75em;
+  background: repeating-radial-gradient(#083D56, #083D56 0.2em, transparent 0.2em, transparent 100%);
+  background-size: 0.8em 0.8em;
+  animation: pac-dots 5s linear infinite;
+}
+
+#toggle:checked ~ #sect .loader-pacman {
+  filter: drop-shadow(0.2em 0.2em 0.2em rgba(0, 0, 0, 0.3));
+}
+
+.loader-pacman:before, .loader-pacman:after {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0;
+  top: -0.615em;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  border: 1em solid #0E5F76;
+}
+
+.loader-pacman:before {
+  border-color: transparent #0E5F76 #0E5F76 transparent;
+  animation: pac-top 0.5s linear infinite alternate;
+}
+
+.loader-pacman:after {
+  border-color: #0E5F76 transparent transparent #0E5F76;
+  top: auto;
+  bottom: -0.615em;
+  animation: pac-bot 0.5s linear infinite alternate;
+}
+
+@keyframes pac-dots {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes pac-move {
+  to {
+    width: 1em;
+  }
+}
+
+@keyframes pac-top {
+  from {
+    transform: rotate(45deg);
+  }
+
+  to {
+    transform: rotate(105deg);
+  }
+}
+
+@keyframes pac-bot {
+  from {
+    transform: rotate(45deg);
+  }
+
+  to {
+    transform: rotate(-15deg);
+  }
+}
+
+/*-------------   LOADER PACMAN  ------------------*/
+
+.buttons-content {
+  display: flex;
+  justify-content: space-around;
+  margin: 30px 0;
+  padding: 0 100px;
+}

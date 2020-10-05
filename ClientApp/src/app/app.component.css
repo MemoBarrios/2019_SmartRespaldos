@@ -1,0 +1,17 @@
+body, html {
+    height: 100%;
+}
+
+body {
+  background: linear-gradient(rgba(95, 114, 190, .7), rgba(155, 35, 234, .8)), url('/assets/images/code2.jpg');
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+}
+
+@media (max-width: 767px) {
+  /* On small screens, the nav menu spans the full width of the screen. Leave a space for it. */
+  .body-content {
+    padding-top: 50px;
+  }
+}

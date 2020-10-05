@@ -1,0 +1,116 @@
+<div id="contain1" class="container">
+  <h1 class="title-container">Administrador de Respaldos</h1>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+        <!--<ngb-datepicker #dp (navigate)="fecha = $event.next"></ngb-datepicker>-->
+        <div class="form-group">
+          <div class="input-group">
+            <input class="form-control" placeholder="dd/mm/yyyy"
+                   name="d2" #c2="ngModel" [(ngModel)]="model2" ngbDatepicker #d2="ngbDatepicker">
+            <button class="btn btn-outline-secondary calendar" (click)="d2.toggle()" type="button"></button>
+          </div>
+        </div>
+      </div>
+      <!--<form [formGroup]="formulario" (ngSubmit)="submitForm()">-->
+      <div class="row">
+        <div *ngFor="let suc of dtSucursales; let indice = index" class="funkyradio col-md-2" id="chkContent{{indice + 1}}">
+          <div class="funkyradio-primary">
+            <input type="checkbox" class="checkbox" id="checkbox{{indice + 1}}" [(ngModel)]="suc.seleccionado" [value]="suc.seleccionado" (change)="chkSelect(suc)" />
+            <label for="checkbox{{indice + 1}}">{{dtSucursales[indice].clave}}</label>
+          </div>
+        </div>
+      </div>
+      <!--</form>-->
+    </div>
+    <div class="col-md-12 buttons-content">
+      <button class="btn btn-success" (click)="selectAll()">{{ btnTodos }}</button>
+      <button class="btn btn-primary" (click)="consultar()">Rutas Respaldos</button>
+      <button class="btn btn-info" (click)="consultaJobs('Consulta')">Consulta Jobs Resp.</button>
+      <button class="btn btn-danger" (click)="consultaJobs('Revision')">Revision Diaria</button>
+      <button class="btn btn-danger" (click)="Haber('hola')">Haber</button>
+    </div>
+  </div>
+  <!------------ LOADER PACMAN -------------->
+  <div class="row" id="load-pacman">
+    <div class="col-md-1">
+      <div class="loader-pacman"></div>
+    </div>
+    <p class="col-md-12 text-center">Cargando...</p>
+  </div>
+  <!------------ LOADER PACMAN -------------->
+  <div class="row">
+    <div class="col-md-12">
+      <div *ngIf="(dtRevision | json) != '{}'; else SinResultados" id="tbRevision" class="table table-dark table-hover">
+        <ngb-tabset [justify]="currentJustify">
+          <ngb-tab title="{{ suc.key }}" *ngFor="let suc of dtRevision | keyvalue">
+            <ng-template ngbTabContent>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Servidor</th>
+                    <th>Respaldo</th>
+                    <th>Fecha</th>
+                    <th>Estatus</th>
+                    <th>Mensaje</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngIf="dtRevision[suc.key].length > 0; else elseBlock">
+                    <tr *ngFor="let resp of dtRevision[suc.key] | keyvalue">
+                      <ng-container *ngIf="(resp.value.Estatus | json) == ('SC'|json);else Exito">
+                        <td colspan="5">{{resp.value.Mensaje | json}}</td>
+                      </ng-container>
+                      <ng-template #Exito>
+                        <td>{{resp.value.sucursal | json }}</td>
+                        <td>{{resp.value.jobName | json }}</td>
+                        <td>{{resp.value.runDate | json }}</td>
+                        <td>{{resp.value.Estatus | json }}</td>
+                        <td>{{resp.value.Mensaje | json }}</td>
+                      </ng-template>
+                    </tr>
+                  </ng-container>
+                  <ng-template #elseBlock>No se encontraron resultados.</ng-template>
+                </tbody>
+              </table>
+            </ng-template>
+          </ngb-tab>
+        </ngb-tabset>
+      </div>
+      <ng-template #SinResultados><div class="row"><div class="col-md-12">No se encontraron resultados.</div></div></ng-template>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div id="tbRespaldos" class="table table-dark table-hover" *ngIf="dtRespaldos && dtRespaldos.length > 0">
+        <ngb-tabset [justify]="currentJustify">
+          <ngb-tab title="{{ suc.clave }}" *ngFor="let suc of dtServSelected; let i = index">
+            <ng-template ngbTabContent>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Tipo</th>
+                    <th>BD</th>
+                    <th>NumeroSemana</th>
+                    <th>RutaActual</th>
+                    <th>RutaAnterior</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let resp of dtRespaldos[i]">
+                    <td>{{ resp.tipo }}</td>
+                    <td>{{ resp.db }}</td>
+                    <td>{{ resp.numeroSemana }}</td>
+                    <td>{{ resp.rutaActual }}</td>
+                    <td>{{ resp.rutaAnterior }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </ng-template>
+          </ngb-tab>
+        </ngb-tabset>
+      </div>
+    </div>
+  </div>
+</div>
+
