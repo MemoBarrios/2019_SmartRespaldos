@@ -3,7 +3,7 @@ body, html {
 }
 
 body {
-  background: linear-gradient(rgba(95, 114, 190, .7), rgba(155, 35, 234, .8)), url('/assets/images/code2.jpg');
+  background: linear-gradient(rgba(95, 114, 190, .7), rgba(155, 35, 234, .8)), url('/assets/images/fondo.jpg'); 
   background-size: cover;
   background-position: center;
   color: #fff;

@@ -1,14 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { KeyValuePipe } from '@angular/common/';
+import { Component, OnInit } from '@angular/core';
 import { IRespaldo } from './IRespaldo';
 import { ISucursal } from './ISucursal';
 import { RespaldosService } from '../services/respaldos.service';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
-import { IRespaldos } from './IRespaldos';
-import { error } from 'protractor';
-import { NgbDateStruct, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateStruct, NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { DateParserService } from '../services/date-parser.service';
-import { ISucursalDTO } from './ISucursalDTO';
 import { HttpEventType, HttpEvent } from '@angular/common/http';
 
 @Component({
@@ -22,26 +18,30 @@ export class HomeComponent implements OnInit {
   dtSucursales: Array<ISucursal>;
   dtSucResult: Array<ISucursal>;
   dtRevision: any;
-  fecha: Date;
   model2: NgbDateStruct;
-  //dtSucursales: any = [{ clave: 201, nombre: '201', ip: '', seleccionado: false },
-  //  { clave: 202, nombre: '202', ip: '', seleccionado: false  },
-  //  { clave: 203, nombre: '203', ip: '', seleccionado: false  },
-  //  { clave: 204, nombre: '204', ip: '', seleccionado: false  },
-  //  { clave: 205, nombre: '205', ip: '', seleccionado: false  }];
+  fechaPicker: string;
   dtServSelected: Array<ISucursal> = new Array<ISucursal>();
   dtSucs: Array<number>;
   bTodos: boolean = false;
   btnTodos: string = "Marcar Todos";
 
-  constructor(private service: RespaldosService, private formBuilder: FormBuilder, private serviceDate: DateParserService, private ngbCalendar: NgbCalendar) { }
+  constructor(private service: RespaldosService, private formBuilder: FormBuilder, private serviceDate: DateParserService, private fechaAdapter: NgbDateAdapter<string>, private ngbCalendar: NgbCalendar) { }
   
   ngOnInit() {
     this.ConsultaSucursales();
     this.dtRespaldos = new Array<IRespaldo[]>();
-    this.model2 = this.ngbCalendar.getToday();
+    this.fechaPicker = this.fechaAdapter.toModel(this.ngbCalendar.getToday());
   }
 
+  //FUNCION PARA CONSULTAR LOS DATOS DE LOS SERVIDORES DE LAS SUCURSALES ACTIVAS
+  ConsultaSucursales() {
+    this.dtRespaldos = [];
+    this.service.getAllSucursales().subscribe(sucursalesDesdeWS => {
+      this.dtSucursales = sucursalesDesdeWS
+    }, error => console.error(error));
+  }
+
+  //FUNCION PARA CONSULTAR LAS RUTAS DONDE SE VAN A GENERAR LOS RESPALDOS
   ConsultaResp(ip: string, indice?: number) {
     if (indice != null && indice != undefined) {
       this.service.getAllRespaldos(ip).subscribe(respaldosDesdeWS => {
@@ -56,21 +56,7 @@ export class HomeComponent implements OnInit {
       this.service.getAllRespaldos(ip).subscribe(respaldosDesdeWS => { this.dtRespaldo = respaldosDesdeWS }, error => console.error(error));
     }
   }
-
-  //ConsultaRespSucursales(sucursales: Array<ISucursal>) {
-  //  console.log(sucursales);
-  //  this.service.getRespaldoSucursales(sucursales).subscribe(respaldosDesdeWS => {
-  //    this.dtSucResult = respaldosDesdeWS        
-  //  });
-  //}
-
-  ConsultaSucursales() {
-    this.dtRespaldos = [];
-    this.service.getAllSucursales().subscribe(sucursalesDesdeWS => {
-    this.dtSucursales = sucursalesDesdeWS
-    }, error => console.error(error));
-  }
-
+ 
   consultar() {
     if (this.dtServSelected.length > 0) {
       for (var i = 0; i < this.dtServSelected.length; i++) {
@@ -79,18 +65,17 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  //FUNCION PARA CONSULTAR LOS JOBS DE RESPALDO SEGUN EL TIPO DE CONSULTA: 1.-CONSULTA = SOLO CONSULTAR, 2.-REVISION = REVISION DIARIA DE JOBS
   consultaJobs(tipoConsulta: string) {
-    //this.bTodos = false;
-    //this.selectAll();
     console.log(tipoConsulta);
     this.dtRevision = "";
-    let fechaSelect: string = this.serviceDate.format(this.model2);
+    //let fechaSelect: string = this.serviceDate.format(this.fechaPicker);
     this.dtSucs = new Array<number>();
 
     for (var i = 0; i < this.dtServSelected.length; i++) {
       this.dtSucs.push(this.dtServSelected[i].clave);
     }
-    this.service.getJobsRespaldos(JSON.stringify(this.dtSucs), fechaSelect, tipoConsulta).subscribe((event: HttpEvent<any>) => {
+    this.service.getJobsRespaldos(JSON.stringify(this.dtSucs), this.fechaPicker, tipoConsulta).subscribe((event: HttpEvent<any>) => {
       switch (event.type) {
         case HttpEventType.Sent:
           console.log('Request sent!');
@@ -111,8 +96,8 @@ export class HomeComponent implements OnInit {
     },error => console.log(error));       
   }
 
-  Haber(tipo) {
-    console.log(tipo);
+  Haber() {
+    console.log(this.fechaPicker);
   }
 
   chkSelect(sucSelected: ISucursal) {
@@ -134,6 +119,7 @@ export class HomeComponent implements OnInit {
    
   }
 
+  //METODO PARA SELECCIONAR Y QUITAR SELECCION DE LOS CHECKBOX
   selectAll() {
     if (this.bTodos == true) {
       for (var i = 0; i < this.dtSucursales.length; i++) {

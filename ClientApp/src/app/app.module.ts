@@ -4,7 +4,7 @@ import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbDateAdapter, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -13,6 +13,7 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { RespaldosService } from './services/respaldos.service';
 import { DateParserService } from './services/date-parser.service';
+import { FechaAdapterService } from './services/fecha-adapter.service';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,7 @@ import { DateParserService } from './services/date-parser.service';
     ])
   ],
   exports: [HomeComponent],
-  providers: [RespaldosService, FormBuilder, DateParserService],
+  providers: [RespaldosService, FormBuilder, { provide: NgbDateAdapter, useClass: FechaAdapterService }, { provide: NgbDateParserFormatter, useClass: DateParserService }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

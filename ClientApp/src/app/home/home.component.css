@@ -66,14 +66,14 @@ div.funkyradio.col-md-3 {
 
 .funkyradio input[type="radio"]:hover:not(:checked) ~ label,
 .funkyradio input[type="checkbox"]:hover:not(:checked) ~ label {
-  color: #888;
+  font-weight: bold;
 }
 
   .funkyradio input[type="radio"]:hover:not(:checked) ~ label:before,
   .funkyradio input[type="checkbox"]:hover:not(:checked) ~ label:before {
     content: '\2714';
     text-indent: .7em;
-    color: #C2C2C2;
+    font-weight: bold;
   }
 
 .funkyradio input[type="radio"]:checked ~ label,
@@ -103,7 +103,7 @@ div.funkyradio.col-md-3 {
 .funkyradio-primary input[type="radio"]:checked ~ label:before,
 .funkyradio-primary input[type="checkbox"]:checked ~ label:before {
   color: #fff;
-  background-color: #337ab7;
+  background-color: #28a745;
 }
 
 .funkyradio-success input[type="radio"]:checked ~ label:before,
@@ -132,12 +132,16 @@ div.funkyradio.col-md-3 {
 
 /*CSS CHECKBOX*/
 
+#txtFecha {
+    width: 120px;
+}
 
 button.calendar, button.calendar:active {
   width: 2.75rem;
-  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAcCAYAAAAEN20fAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAEUSURBVEiJ7ZQxToVAEIY/YCHGxN6XGOIpnpaEsBSeQC9ArZbm9TZ6ADyBNzAhQGGl8Riv4BLAWAgmkpBYkH1b8FWT2WK/zJ8ZJ4qiI6XUI3ANnGKWBnht2/ZBDRK3hgVGNsCd7/ui+JkEIrKtqurLpEWaphd933+IyI3LEIdpCYCiKD6HcuOa/nwOa0ScJEnk0BJg0UTUWJRl6RxCYEzEmomsIlPU3IPW+grIAbquy+q6fluy/28RIBeRMwDXdXMgXLj/B2uimRXpui4D9sBeRLKl+1N+L+t6RwbWrZliTTTr1oxYtzVWiTQAcRxvTX+eJMnlUDaO1vpZRO5NS0x48sIwfPc87xg4B04MCzQi8hIEwe4bl1DnFMCN2zsAAAAASUVORK5CYII=') !important;
+  /*background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAcCAYAAAAEN20fAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAEUSURBVEiJ7ZQxToVAEIY/YCHGxN6XGOIpnpaEsBSeQC9ArZbm9TZ6ADyBNzAhQGGl8Riv4BLAWAgmkpBYkH1b8FWT2WK/zJ8ZJ4qiI6XUI3ANnGKWBnht2/ZBDRK3hgVGNsCd7/ui+JkEIrKtqurLpEWaphd933+IyI3LEIdpCYCiKD6HcuOa/nwOa0ScJEnk0BJg0UTUWJRl6RxCYEzEmomsIlPU3IPW+grIAbquy+q6fluy/28RIBeRMwDXdXMgXLj/B2uimRXpui4D9sBeRLKl+1N+L+t6RwbWrZliTTTr1oxYtzVWiTQAcRxvTX+eJMnlUDaO1vpZRO5NS0x48sIwfPc87xg4B04MCzQi8hIEwe4bl1DnFMCN2zsAAAAASUVORK5CYII=') !important;*/
+  background-image: url('/assets/images/calendario.svg') !important;
   background-repeat: no-repeat;
-  background-size: 23px;
+  background-size: 27px;
   background-position: center;
 }
 
@@ -160,7 +164,7 @@ button.calendar, button.calendar:active {
   cursor: wait;
   width: 7em;
   height: 0.75em;
-  background: repeating-radial-gradient(#083D56, #083D56 0.2em, transparent 0.2em, transparent 100%);
+  background: repeating-radial-gradient(#fff, #fff 0.2em, transparent 0.2em, transparent 100%);
   background-size: 0.8em 0.8em;
   animation: pac-dots 5s linear infinite;
 }
@@ -178,16 +182,16 @@ button.calendar, button.calendar:active {
   width: 1em;
   height: 1em;
   border-radius: 50%;
-  border: 1em solid #0E5F76;
+  border: 1em solid #fff;
 }
 
 .loader-pacman:before {
-  border-color: transparent #0E5F76 #0E5F76 transparent;
+  border-color: transparent #fff #fff transparent;
   animation: pac-top 0.5s linear infinite alternate;
 }
 
 .loader-pacman:after {
-  border-color: #0E5F76 transparent transparent #0E5F76;
+  border-color: #fff transparent transparent #fff;
   top: auto;
   bottom: -0.615em;
   animation: pac-bot 0.5s linear infinite alternate;

@@ -6,8 +6,8 @@
         <!--<ngb-datepicker #dp (navigate)="fecha = $event.next"></ngb-datepicker>-->
         <div class="form-group">
           <div class="input-group">
-            <input class="form-control" placeholder="dd/mm/yyyy"
-                   name="d2" #c2="ngModel" [(ngModel)]="model2" ngbDatepicker #d2="ngbDatepicker">
+            <input class="form-control" placeholder="dd/mm/yyyy" id="txtFecha"
+                   name="d2" #c2="ngModel" [(ngModel)]="fechaPicker" ngbDatepicker #d2="ngbDatepicker">
             <button class="btn btn-outline-secondary calendar" (click)="d2.toggle()" type="button"></button>
           </div>
         </div>
@@ -39,10 +39,11 @@
     <p class="col-md-12 text-center">Cargando...</p>
   </div>
   <!------------ LOADER PACMAN -------------->
+  <!------------ TABLA PARA MOSTRAR RESULTADOS DE LA REVISION DE JOBS-------------->
   <div class="row">
     <div class="col-md-12">
       <div *ngIf="(dtRevision | json) != '{}'; else SinResultados" id="tbRevision" class="table table-dark table-hover">
-        <ngb-tabset [justify]="currentJustify">
+        <ngb-tabset type="pills" [justify]="currentJustify">
           <ngb-tab title="{{ suc.key }}" *ngFor="let suc of dtRevision | keyvalue">
             <ng-template ngbTabContent>
               <table>
@@ -80,6 +81,8 @@
       <ng-template #SinResultados><div class="row"><div class="col-md-12">No se encontraron resultados.</div></div></ng-template>
     </div>
   </div>
+  <!------------ TABLA PARA MOSTRAR RESULTADOS DE LA REVISION DE JOBS-------------->
+  <!------------ TABLA PARA MOSTRAR RESULTADOS DE CONSULTAR LAS RUTAS DE RESPALDOS-------------->
   <div class="row">
     <div class="col-md-12">
       <div id="tbRespaldos" class="table table-dark table-hover" *ngIf="dtRespaldos && dtRespaldos.length > 0">
@@ -112,5 +115,6 @@
       </div>
     </div>
   </div>
+  <!------------ TABLA PARA MOSTRAR RESULTADOS DE CONSULTAR LAS RUTAS DE RESPALDOS-------------->
 </div>
 
