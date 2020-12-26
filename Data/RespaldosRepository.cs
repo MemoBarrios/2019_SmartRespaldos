@@ -1,4 +1,5 @@
 ﻿using _2019_Respaldos.Model;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -14,7 +15,7 @@ namespace _2019_Respaldos.Data
     public class RespaldosRepository
     {
         private string conexionDB;
-        private List<Sucursal> Sucursales;
+        private List<Sucursal> Sucursales = new List<Sucursal>();
 
         public RespaldosRepository(IConfiguration configuration)
         {
@@ -143,9 +144,8 @@ namespace _2019_Respaldos.Data
         //    }
         //}
 
-        public async Task<string> GetJobsRespaldos(string fecha, string sucursales, string tipoConsulta)
+        public async Task<string> GetJobsRespaldos(string fecha, string sucursales, string tipoConsulta, List<Sucursal> catalogoSucs)
         {
-            await GetSucursales();
             if (sucursales != null && sucursales != "")
             {
                 DataSet dsRespaldos = new DataSet("Respaldos");
@@ -171,7 +171,7 @@ namespace _2019_Respaldos.Data
                     dtRespaldo.Columns.Add("Estatus", typeof(string));
                     dtRespaldo.Columns.Add("Mensaje", typeof(string));
 
-                    Sucursal sucursal = Sucursales.Find(x => x.Clave.Equals(suc));
+                    Sucursal sucursal = catalogoSucs.Find(x => x.Clave.Equals(suc));
 
                     conexionDB = "Data Source=" + sucursal.Ip + ";Initial Catalog=" + sucursal.Db + ";User ID=analisis;Password=analisis20120203;";
                     try

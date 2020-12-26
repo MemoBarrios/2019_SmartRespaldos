@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using _2019_Respaldos.Model;
 using System.Data;
 using _2019_Respaldos.Data;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
 namespace _2019_Respaldos.Controllers
 {
@@ -27,7 +29,9 @@ namespace _2019_Respaldos.Controllers
         [HttpGet("{action}")]
         public async Task<List<Sucursal>> GetSucursales()
         {
-            return await respaldosRepository.GetSucursales();
+            List<Sucursal> lstSucursales = await respaldosRepository.GetSucursales();
+            HttpContext.Session.SetString("Sucursales", JsonConvert.SerializeObject(lstSucursales));
+            return lstSucursales;
         }
 
         [HttpGet("{action}/{sucursal}")]
@@ -40,7 +44,8 @@ namespace _2019_Respaldos.Controllers
         [HttpGet("{action}")]
         public async Task<string> GetJobsRespaldos([FromQuery] string sucursales, [FromQuery] string fecha, [FromQuery] string tipoConsulta)
         {
-            return await respaldosRepository.GetJobsRespaldos(fecha, sucursales, tipoConsulta);
+            List<Sucursal> _catalogoSucs = JsonConvert.DeserializeObject<List<Sucursal>>(HttpContext.Session.GetString("Sucursales"));
+            return await respaldosRepository.GetJobsRespaldos(fecha, sucursales, tipoConsulta, _catalogoSucs);
         }
 
         //[HttpGet("{action}")]
