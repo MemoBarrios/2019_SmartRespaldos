@@ -36,7 +36,7 @@
         </div>
         <div class="col-md-12 buttons-content">
           <button class="btn btn-success" (click)="selectAll()">{{ btnTodos }}</button>
-          <button class="btn btn-primary" (click)="consultar()">Rutas Respaldos</button>
+          <button class="btn btn-primary" (click)="getRutasResp()">Rutas Respaldos</button>
           <button class="btn btn-info" (click)="consultaJobs('Consulta')">Consulta Jobs Resp.</button>
           <button class="btn btn-danger" (click)="consultaJobs('Revision')">Revision Diaria</button>
           <button class="btn btn-danger" (click)="Haber('hola')">Haber</button>
@@ -52,7 +52,7 @@
       <!------------ LOADER PACMAN -------------->
       <!------------ TABLA PARA MOSTRAR RESULTADOS DE LA REVISION DE JOBS-------------->
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12  ">
           <div *ngIf="(dtRevision | json) != '{}'; else SinResultados" id="tbRevision" class="table table-dark table-hover">
             <ngb-tabset type="pills" [justify]="currentJustify">
               <ngb-tab title="{{ suc.key }}" *ngFor="let suc of dtRevision | keyvalue">
@@ -96,9 +96,9 @@
       <!------------ TABLA PARA MOSTRAR RESULTADOS DE CONSULTAR LAS RUTAS DE RESPALDOS-------------->
       <div class="row">
         <div class="col-md-12">
-          <div id="tbRespaldos" class="table table-dark table-hover" *ngIf="dtRespaldos && dtRespaldos.length > 0">
+          <div id="tbRespaldos" class="table table-dark table-hover" *ngIf="dtRutasResp && dtRutasResp.length > 0">
             <ngb-tabset [justify]="currentJustify">
-              <ngb-tab title="{{ suc.clave }}" *ngFor="let suc of dtServSelected; let i = index">
+              <ngb-tab title="{{ servidor.sucursal.clave }}" *ngFor="let servidor of dtRutasResp; let i = index">
                 <ng-template ngbTabContent>
                   <table>
                     <thead>
@@ -111,13 +111,15 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let resp of dtRespaldos[i]">
-                        <td>{{ resp.tipo }}</td>
-                        <td>{{ resp.db }}</td>
-                        <td>{{ resp.numeroSemana }}</td>
-                        <td>{{ resp.rutaActual }}</td>
-                        <td>{{ resp.rutaAnterior }}</td>
-                      </tr>
+                      <ng-container *ngFor="let rutaResp of dtRutasResp[i].rutasRespaldos; let s = index">
+                        <tr >
+                          <td>{{ rutaResp.tipo }}</td>
+                          <td>{{ rutaResp.db }}</td>
+                          <td>{{ rutaResp.numeroSemana }}</td>
+                          <td>{{ rutaResp.rutaActual }}</td>
+                          <td>{{ rutaResp.rutaAnterior }}</td>
+                        </tr>
+                      </ng-container>
                     </tbody>
                   </table>
                 </ng-template>

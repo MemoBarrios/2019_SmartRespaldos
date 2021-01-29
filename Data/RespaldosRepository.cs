@@ -144,6 +144,87 @@ namespace _2019_Respaldos.Data
         //    }
         //}
 
+        public async Task<IEnumerable<Servidor>> GetRutasRespaldos(string sucursales, List<Sucursal> catalogoSucs)
+        {
+            List<Servidor> lstServidores = new List<Servidor>();
+
+            if (sucursales != null && sucursales != "")
+            {
+                DataSet dsRutasResp = new DataSet("Respaldos");
+                DataTable dtRutasResp;
+                string resultado = "";
+                int[] sucJson = JsonConvert.DeserializeObject<int[]>(sucursales);
+
+                foreach (var suc in sucJson)
+                {
+                    Servidor _servidor = new Servidor();                    
+                    dtRutasResp = new DataTable("" + suc + "");
+                    dtRutasResp.Columns.Add("Tipo", typeof(string));
+                    dtRutasResp.Columns.Add("BD", typeof(string));
+                    dtRutasResp.Columns.Add("NumeroSemana", typeof(int));
+                    dtRutasResp.Columns.Add("RutaActual", typeof(string));
+                    dtRutasResp.Columns.Add("RutaAnterior", typeof(string));
+
+                    Sucursal sucursal = catalogoSucs.Find(x => x.Clave.Equals(suc));
+                    _servidor.Sucursal = sucursal;
+
+                    conexionDB = "Data Source=" + sucursal.Ip + ";Initial Catalog=" + sucursal.Db + ";User ID=analisis;Password=analisis20120203;";
+                    try
+                    {
+                        using (SqlConnection conn = new SqlConnection(conexionDB))
+                        {
+                            using (SqlCommand cmd = new SqlCommand("TSP_Respaldos", conn))
+                            {
+                                cmd.CommandType = CommandType.StoredProcedure;
+                                cmd.Parameters.Add(new SqlParameter("@Opcion", 2));
+                                List<RutaRespaldo> lstRutasRespaldos = new List<RutaRespaldo>();
+                                try
+                                {
+                                    await conn.OpenAsync();
+                                    using (var reader = await cmd.ExecuteReaderAsync())
+                                    {
+                                        while (await reader.ReadAsync())
+                                        {
+                                            lstRutasRespaldos.Add(MapToRutaRespaldo(reader));
+                                        }
+                                    }
+                                    //using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                                    //{
+                                    //    await Task.Run(() => da.Fill(dtRutasResp));
+                                    //    dsRutasResp.Tables.Add(dtRutasResp);
+                                    //}
+                                }
+                                catch (SqlException ex)
+                                {
+                                    //SI SE MANDA UNA EXCEPCION DERIVADO DE QUE LA SUCURSAL NO TENGA CONEXION, SE AGREGAR AL DATASET PARA MOSTRARLO COMO RESULTADO
+                                    if (ex.Number == 53)
+                                    {
+                                        DataRow row = dtRutasResp.NewRow();
+                                        row["Mensaje"] = "No se pudo conectar con el servidor de la sucursal " + suc;
+                                        row["Estatus"] = "SC";
+                                        dtRutasResp.Rows.Add(row);
+                                        dsRutasResp.Tables.Add(dtRutasResp);
+                                        continue;
+                                    }
+                                }
+                                _servidor.RutasRespaldos = lstRutasRespaldos;
+                            }
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                    }
+                    lstServidores.Add(_servidor);
+                }
+                return lstServidores;
+            }
+            else
+            {
+                return lstServidores;
+            }
+        }
+
         public async Task<string> GetJobsRespaldos(string fecha, string sucursales, string tipoConsulta, List<Sucursal> catalogoSucs)
         {
             if (sucursales != null && sucursales != "")
@@ -289,7 +370,6 @@ namespace _2019_Respaldos.Data
                     }
                     catch (Exception ex)
                     {
-
                         Console.WriteLine(ex);
                     }
                 }
@@ -340,6 +420,18 @@ namespace _2019_Respaldos.Data
         private Respaldo MapToRespaldo(SqlDataReader reader)
         {
             return new Respaldo()
+            {
+                Tipo = reader["Tipo"].ToString(),
+                DB = reader["BD"].ToString(),
+                NumeroSemana = (byte)reader["NumeroSemana"],
+                RutaActual = reader["RutaActual"].ToString(),
+                RutaAnterior = reader["RutaAnterior"].ToString()
+            };
+        }
+
+        private RutaRespaldo MapToRutaRespaldo(SqlDataReader reader)
+        {
+            return new RutaRespaldo()
             {
                 Tipo = reader["Tipo"].ToString(),
                 DB = reader["BD"].ToString(),

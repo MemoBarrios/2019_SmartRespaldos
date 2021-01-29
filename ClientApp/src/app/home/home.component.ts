@@ -6,6 +6,8 @@ import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@ang
 import { NgbDateStruct, NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { DateParserService } from '../services/date-parser.service';
 import { HttpEventType, HttpEvent } from '@angular/common/http';
+import { IRespaldos } from './IRespaldos';
+import { IServidor } from '../Interfaces/IServidor';
 
 @Component({
   selector: 'app-home',
@@ -15,6 +17,7 @@ import { HttpEventType, HttpEvent } from '@angular/common/http';
 export class HomeComponent implements OnInit {
   dtRespaldo: Array<IRespaldo>;
   dtRespaldos: Array<IRespaldo[]>;
+  dtRutasResp: Array<IServidor>;
   dtSucursales: Array<ISucursal>;
   dtSucResult: Array<ISucursal>;
   dtRevision: any;
@@ -65,9 +68,36 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  getRutasResp() {
+    this.dtSucs = new Array<number>();
+    for (var i = 0; i < this.dtServSelected.length; i++) {
+      this.dtSucs.push(this.dtServSelected[i].clave);
+    }
+
+    this.service.getRutasResp(JSON.stringify(this.dtSucs)).subscribe((event: HttpEvent<Array<IServidor>>) => {
+      switch (event.type) {
+        case HttpEventType.Sent:
+          console.log('Request sent!');
+          document.getElementById("load-pacman").style.display = 'flex';
+          window.scrollTo(0, document.body.scrollHeight);
+          break;
+        case HttpEventType.ResponseHeader:
+          console.log('Response header received!');
+          break;
+        case HttpEventType.DownloadProgress:
+          const kbLoaded = Math.round(event.loaded / 1024);
+          console.log(`Download in progress! ${kbLoaded}Kb loaded`);
+          break;
+        case HttpEventType.Response:
+          document.getElementById("load-pacman").style.display = 'none';
+          console.log('😺 Done!', event.body);
+          this.dtRutasResp = event.body;          
+      }
+    }, error => console.log(error));
+  }
+
   //FUNCION PARA CONSULTAR LOS JOBS DE RESPALDO SEGUN EL TIPO DE CONSULTA: 1.-CONSULTA = SOLO CONSULTAR, 2.-REVISION = REVISION DIARIA DE JOBS
   consultaJobs(tipoConsulta: string) {
-    console.log(tipoConsulta);
     this.dtRevision = "";
     //let fechaSelect: string = this.serviceDate.format(this.fechaPicker);
     this.dtSucs = new Array<number>();
@@ -97,7 +127,7 @@ export class HomeComponent implements OnInit {
   }
 
   Haber() {
-    console.log(this.fechaPicker);
+    console.log(this.dtRutasResp[1].rutasRespaldos[1]);
   }
 
   chkSelect(sucSelected: ISucursal) {

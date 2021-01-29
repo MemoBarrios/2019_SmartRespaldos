@@ -48,10 +48,11 @@ namespace _2019_Respaldos.Controllers
             return await respaldosRepository.GetJobsRespaldos(fecha, sucursales, tipoConsulta, _catalogoSucs);
         }
 
-        //[HttpGet("{action}")]
-        //public async Task<string> GetFalloResp([FromQuery] string sucursales, [FromQuery] string fecha)
-        //{
-        //    return await respaldosRepository.GetFalloResp(fecha, sucursales);
-        //}
+        [HttpGet("{action}")]
+        public async Task<IEnumerable<Servidor>> GetRutasRespaldos([FromQuery] string sucursales)
+        {
+            List<Sucursal> _catalogoSucs = JsonConvert.DeserializeObject<List<Sucursal>>(HttpContext.Session.GetString("Sucursales"));
+            return await respaldosRepository.GetRutasRespaldos(sucursales, _catalogoSucs);
+        }
     }
 }

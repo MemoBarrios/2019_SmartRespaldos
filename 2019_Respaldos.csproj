@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -30,6 +30,8 @@
     <None Remove="ClientApp\src\app\home\IRespaldos.ts" />
     <None Remove="ClientApp\src\app\home\ISucursal.ts" />
     <None Remove="ClientApp\src\app\home\ISucursalDTO.ts" />
+    <None Remove="ClientApp\src\app\Interfaces\IRutaRespaldo.ts" />
+    <None Remove="ClientApp\src\app\Interfaces\IServidor.ts" />
     <None Remove="Model\Respaldo.ts" />
   </ItemGroup>
 
@@ -38,6 +40,8 @@
     <TypeScriptCompile Include="ClientApp\src\app\home\IRespaldos.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\home\ISucursal.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\home\ISucursalDTO.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\Interfaces\IRutaRespaldo.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\Interfaces\IServidor.ts" />
     <TypeScriptCompile Include="Model\Respaldo.ts" />
   </ItemGroup>
 

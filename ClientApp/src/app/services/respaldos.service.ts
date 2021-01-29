@@ -3,6 +3,7 @@ import { HttpClient, HttpParams, HttpHeaders, HttpEvent, HttpEventType, HttpRequ
 import { Observable } from 'rxjs';
 import { IRespaldo } from '../home/IRespaldo';
 import { ISucursal } from '../home/ISucursal';
+import { IServidor } from '../Interfaces/IServidor';
 
 @Injectable({
   providedIn: 'root'
@@ -45,18 +46,14 @@ export class RespaldosService {
       ),
       params: new HttpParams().set("sucursales", sucursales).set("fecha", fecha).set("tipoConsulta", tipoConsulta)
     });
-    //return this.http.get<any>(this.apiURL + "/GetJobsRespaldos/", httpOptions);
-
   }
 
-  //getFalloResp(sucursales: any, fecha: string): Observable<any> {
-  //  const httpOptions = {
-  //    headers: new HttpHeaders({
-  //      'Content-Type': 'application/json'
-  //    }),
-  //    params: new HttpParams().set("sucursales", sucursales).set("fecha", fecha)
-  //  };
-  //  return this.http.get<any>(this.apiURL + "/GetFalloResp/", httpOptions);
-  //}
-
+  getRutasResp(sucursales: any): Observable<HttpEvent<IServidor[]> {
+    return this.http.get<IServidor[]>(this.apiURL + "/GetRutasRespaldos/", {
+      reportProgress: true, observe: "events", headers: new HttpHeaders(
+        { 'Content-Type': 'application/json' },
+      ),
+      params: new HttpParams().set("sucursales", sucursales)
+    });
+  }
 }
