@@ -20,25 +20,12 @@ namespace _2019_Respaldos.Controllers
             this.respaldosRepository = _respaldosRepository ?? throw new ArgumentNullException(nameof(_respaldosRepository));
         }
 
-        [HttpGet("{action}/{ip}")]
-        public async Task<List<Respaldo>> GetRespaldos(string ip)
-        {
-            return await respaldosRepository.GetAllRespaldos(ip);
-        }
-
         [HttpGet("{action}")]
         public async Task<List<Sucursal>> GetSucursales()
         {
             List<Sucursal> lstSucursales = await respaldosRepository.GetSucursales();
             HttpContext.Session.SetString("Sucursales", JsonConvert.SerializeObject(lstSucursales));
             return lstSucursales;
-        }
-
-        [HttpGet("{action}/{sucursal}")]
-        public async Task<List<Sucursal>> GetRespaldoSucursales(List<Sucursal> sucursal)
-        {
-            string _sucursal = "";
-            return await respaldosRepository.GetRespaldoSucursales(_sucursal);
         }
 
         [HttpGet("{action}")]

@@ -45,30 +45,8 @@ export class HomeComponent implements OnInit {
   }
 
   //FUNCION PARA CONSULTAR LAS RUTAS DONDE SE VAN A GENERAR LOS RESPALDOS
-  ConsultaResp(ip: string, indice?: number) {
-    if (indice != null && indice != undefined) {
-      this.service.getAllRespaldos(ip).subscribe(respaldosDesdeWS => {
-        this.dtRespaldo = respaldosDesdeWS,
-          this.dtRespaldos[indice] = this.dtRespaldo;
-          //this.dtRespaldos.push(this.dtRespaldo)
-          console.log(this.dtRespaldos);
-      }, error => console.error(error));
-
-    }
-    else {
-      this.service.getAllRespaldos(ip).subscribe(respaldosDesdeWS => { this.dtRespaldo = respaldosDesdeWS }, error => console.error(error));
-    }
-  }
- 
-  consultar() {
-    if (this.dtServSelected.length > 0) {
-      for (var i = 0; i < this.dtServSelected.length; i++) {
-        this.ConsultaResp(this.dtServSelected[i].ip.toString(), i);
-      }
-    }
-  }
-
   getRutasResp() {
+    this.dtRutasResp = new Array<IServidor>();
     this.dtSucs = new Array<number>();
     for (var i = 0; i < this.dtServSelected.length; i++) {
       this.dtSucs.push(this.dtServSelected[i].clave);
@@ -97,15 +75,14 @@ export class HomeComponent implements OnInit {
   }
 
   //FUNCION PARA CONSULTAR LOS JOBS DE RESPALDO SEGUN EL TIPO DE CONSULTA: 1.-CONSULTA = SOLO CONSULTAR, 2.-REVISION = REVISION DIARIA DE JOBS
-  consultaJobs(tipoConsulta: string) {
+  getJobsResp(tipoConsulta: string) {
     this.dtRevision = "";
-    //let fechaSelect: string = this.serviceDate.format(this.fechaPicker);
     this.dtSucs = new Array<number>();
 
     for (var i = 0; i < this.dtServSelected.length; i++) {
       this.dtSucs.push(this.dtServSelected[i].clave);
     }
-    this.service.getJobsRespaldos(JSON.stringify(this.dtSucs), this.fechaPicker, tipoConsulta).subscribe((event: HttpEvent<any>) => {
+    this.service.getJobsResp(JSON.stringify(this.dtSucs), this.fechaPicker, tipoConsulta).subscribe((event: HttpEvent<any>) => {
       switch (event.type) {
         case HttpEventType.Sent:
           console.log('Request sent!');

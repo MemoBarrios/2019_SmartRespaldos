@@ -22,128 +22,6 @@ namespace _2019_Respaldos.Data
             conexionDB = configuration.GetConnectionString("TIENDA");
         }
 
-        public async Task<List<Respaldo>> GetAllRespaldos(string ip)
-        {
-            conexionDB = "Data Source=" + ip + ";Initial Catalog=TIENDA;User ID=analisis;Password=analisis20120203;";
-            using (SqlConnection conn = new SqlConnection(conexionDB))
-            {
-                using (SqlCommand cmd = new SqlCommand("TSP_Respaldos", conn))
-                {
-                    //int opcion = 0;
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(new SqlParameter("@Opcion", 2));
-                    var response = new List<Respaldo>();
-                    await conn.OpenAsync();
-                    using (var reader = await cmd.ExecuteReaderAsync())
-                    {
-                        while (await reader.ReadAsync())
-                        {
-                            response.Add(MapToRespaldo(reader));
-                        }
-                    }
-                    return response;
-                }
-            }
-
-        }
-
-        public async Task<List<Sucursal>> GetRespaldoSucursales(string sucursales)
-        {
-            //sucursal = sucursal.OrderBy(o => o.Clave).ToList();
-            await GetSucursales();
-            if (sucursales != null && sucursales != "")
-            {
-                DataSet dsRespaldos = new DataSet("Respaldos");
-                DataTable dtRespaldo;
-                string resultado = "";
-                int[] sucJson = JsonConvert.DeserializeObject<int[]>(sucursales);
-
-                foreach (var suc in sucursales)
-                {
-                    Sucursal sucursal = Sucursales.Find(x => x.Clave.Equals(suc));
-                    conexionDB = "Data Source=" + sucursal.Ip + ";Initial Catalog=" + sucursal.Db + ";User ID=analisis;Password=analisis20120203;";
-                    using (SqlConnection conn = new SqlConnection(conexionDB))
-                    {
-                        using (SqlCommand cmd = new SqlCommand("TSP_Respaldos", conn))
-                        {
-                            cmd.CommandType = CommandType.StoredProcedure;
-                            cmd.Parameters.Add(new SqlParameter("@Opcion", 1));
-                            sucursal.Respaldos = new List<Respaldo>();
-                            await conn.OpenAsync();
-                            using (var reader = await cmd.ExecuteReaderAsync())
-                            {
-                                while (await reader.ReadAsync())
-                                {
-                                    sucursal.Respaldos.Add(MapToRespaldo(reader));
-                                    //response.Add(MapToRespaldo(reader));
-                                }
-                            }
-                        }
-                    }
-
-                }
-            }
-            return new List<Sucursal>();
-        }
-
-        //public async Task<string> GetJobsRespaldos(string fecha, string sucursales)
-        //{
-        //    await GetSucursales();
-        //    if (sucursales != null && sucursales != "")
-        //    {
-        //        DataSet dsRespaldos = new DataSet("Respaldos");
-        //        DataTable dtRespaldo;
-        //        string resultado = "";
-        //        int[] sucJson = JsonConvert.DeserializeObject<int[]>(sucursales);
-        //        DateTime fechaQ = DateTime.Parse(fecha); 
-
-        //        foreach (var suc in sucJson)
-        //        {
-        //            dtRespaldo = new DataTable("" + suc + "");
-        //            dtRespaldo.Columns.Add("sucursal", typeof(string));
-        //            dtRespaldo.Columns.Add("jobName", typeof(string));
-        //            dtRespaldo.Columns.Add("runDate", typeof(string));
-        //            dtRespaldo.Columns.Add("Estatus", typeof(string));
-        //            dtRespaldo.Columns.Add("Mensaje", typeof(string));
-
-        //            Sucursal sucursal = Sucursales.Find(x => x.Clave.Equals(suc));
-
-        //            conexionDB = "Data Source=" + sucursal.Ip + ";Initial Catalog=" + sucursal.Db + ";User ID=analisis;Password=analisis20120203;";
-        //            try
-        //            {
-        //                using (SqlConnection conn = new SqlConnection(conexionDB))
-        //                {
-        //                    using (SqlCommand cmd = new SqlCommand("TSP_Respaldos", conn))
-        //                    {
-        //                        cmd.CommandType = CommandType.StoredProcedure;
-        //                        cmd.Parameters.Add(new SqlParameter("@Opcion", 4));
-        //                        cmd.Parameters.Add(new SqlParameter("@Fecha", fechaQ));
-
-        //                        await conn.OpenAsync();
-        //                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-        //                        {
-        //                            await Task.Run(() => da.Fill(dtRespaldo));
-        //                        }
-        //                    }
-
-        //                    dsRespaldos.Tables.Add(dtRespaldo);
-        //                }
-        //            }
-        //            catch (Exception ex)
-        //            {
-
-        //                Console.WriteLine(ex);
-        //            }
-        //        }
-        //        resultado = JsonConvert.SerializeObject(dsRespaldos, Formatting.Indented);
-        //        return resultado;
-        //    }
-        //    else
-        //    {
-        //        return "No se encontraron sucursales disponibles.";
-        //    }
-        //}
-
         public async Task<IEnumerable<Servidor>> GetRutasRespaldos(string sucursales, List<Sucursal> catalogoSucs)
         {
             List<Servidor> lstServidores = new List<Servidor>();
@@ -188,11 +66,6 @@ namespace _2019_Respaldos.Data
                                             lstRutasRespaldos.Add(MapToRutaRespaldo(reader));
                                         }
                                     }
-                                    //using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                                    //{
-                                    //    await Task.Run(() => da.Fill(dtRutasResp));
-                                    //    dsRutasResp.Tables.Add(dtRutasResp);
-                                    //}
                                 }
                                 catch (SqlException ex)
                                 {
@@ -382,7 +255,6 @@ namespace _2019_Respaldos.Data
             }
         }
 
-
         public async Task<List<Sucursal>> GetSucursales()
         {
             using (SqlConnection conn = new SqlConnection(conexionDB))
@@ -414,18 +286,6 @@ namespace _2019_Respaldos.Data
                 Ip = reader["IP"].ToString(),
                 Db = reader["DB"].ToString(),
                 Seleccionado = (bool)reader["SELECCIONADO"]
-            };
-        }
-
-        private Respaldo MapToRespaldo(SqlDataReader reader)
-        {
-            return new Respaldo()
-            {
-                Tipo = reader["Tipo"].ToString(),
-                DB = reader["BD"].ToString(),
-                NumeroSemana = (byte)reader["NumeroSemana"],
-                RutaActual = reader["RutaActual"].ToString(),
-                RutaAnterior = reader["RutaAnterior"].ToString()
             };
         }
 
